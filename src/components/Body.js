@@ -7,6 +7,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { useDispatch } from "react-redux";
 import { addUser, removeUser } from "../redux/userSlice";
+import Error from "../Layout/Error";
 
 const Body = () => {
   const dispatch = useDispatch();
@@ -22,6 +23,10 @@ const Body = () => {
     {
       path: "/LoginHelp",
       element: <LoginHelp />,
+    },
+    {
+      path: "/error",
+      element: <Error />,
     },
   ]);
 
