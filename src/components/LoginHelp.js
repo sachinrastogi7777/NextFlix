@@ -49,7 +49,7 @@ const LoginHelp = () => {
       <div className="absolute">
         <img
           alt="login-help-bg-pic"
-          src="/Assets/login-help-bg-img-2.jpg"
+          src="/Assets/login-help-bg-img.jpg"
           className="w-screen"
         />
       </div>
