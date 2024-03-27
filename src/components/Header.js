@@ -1,22 +1,58 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AiFillCaretDown } from "react-icons/ai";
 import { GoSearch } from "react-icons/go";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { CiUser } from "react-icons/ci";
 import { IoHelpCircleOutline } from "react-icons/io5";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../utils/firebase";
+import { addUser, removeUser } from "../redux/userSlice";
+import toast, { Toaster } from "react-hot-toast";
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
   const [showDropdown, setShowDropdown] = useState(false);
   const userObject = useSelector((state) => state.user);
   const userName = userObject?.displayName;
   const firstName = userName?.split(" ")[0];
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in
+        const { uid, email, displayName } = user;
+        dispatch(addUser({ uid: uid, email: email, displayName: displayName }));
+        navigate("/browse");
+      } else {
+        // User is signed out
+        dispatch(removeUser());
+        navigate("/");
+      }
+    });
+
+    // Unsubscribe when components unmounts.
+    return () => unsubscribe();
+  }, []);
+
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        setTimeout(() => {
+          toast.success("Loged Out Successfully");
+        }, 200);
+      })
+      .catch((error) => {
+        navigate("/error");
+      });
+  };
+
   return (
     <div>
+      <Toaster toastOptions={{ duration: 2000, position: "top-right" }} />
       {location.pathname === "/" ? (
         <div className="absolute px-36 py-2 w-full bg-gradient-to-b from-black z-10 flex justify-between">
           <img
@@ -26,9 +62,9 @@ const Header = () => {
           />
         </div>
       ) : (
-        <div className="absolute px-16 py-2 w-full bg-gradient-to-b from-black z-10 flex justify-between items-center">
+        <div className="absolute px-10 py-2 w-full bg-gradient-to-b from-black z-10 flex justify-between items-center">
           <img
-            className="w-48"
+            className="w-36"
             src="/Assets/netflix_logo.png"
             alt="netflix-logo"
           />
@@ -40,7 +76,7 @@ const Header = () => {
                 className="w-6 h-6 mx-4 cursor-pointer"
               />
               <img
-                className="w-8 h-8 rounded-sm"
+                className="w-6 h-6 rounded-sm"
                 alt="user-icon"
                 src="/Assets/user-icon.png"
               />
@@ -75,9 +111,7 @@ const Header = () => {
                 <hr />
                 <div
                   className="text-sm text-center my-2 cursor-pointer"
-                  onClick={() => {
-                    navigate("/");
-                  }}
+                  onClick={handleSignOut}
                 >
                   Sign Out of Netflix
                 </div>
