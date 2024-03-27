@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AiFillCaretDown } from "react-icons/ai";
 import { GoSearch } from "react-icons/go";
 import { IoMdNotificationsOutline } from "react-icons/io";
@@ -63,11 +63,23 @@ const Header = () => {
         </div>
       ) : (
         <div className="absolute px-10 py-2 w-full bg-gradient-to-b from-black z-10 flex justify-between items-center">
-          <img
-            className="w-36"
-            src="/Assets/netflix_logo.png"
-            alt="netflix-logo"
-          />
+          <div className="flex items-center">
+            <img
+              className="w-36"
+              src="/Assets/netflix_logo.png"
+              alt="netflix-logo"
+            />
+            <ul className="flex text-white px-10 focus:font-semibold cursor-pointer">
+              <Link to="/browse">
+                <li className="px-2 font-bold">Home</li>
+              </Link>
+              <li className="px-2">TV Shows</li>
+              <li className="px-2">Movies</li>
+              <li className="px-2">New & Popular</li>
+              <li className="px-2">My List</li>
+              <li className="px-2">Browse by Languages</li>
+            </ul>
+          </div>
           <div>
             <div className="flex items-center">
               <GoSearch color="white" className="w-6 h-6 mx-1 cursor-pointer" />
