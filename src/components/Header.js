@@ -10,6 +10,12 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { addUser, removeUser } from "../redux/userSlice";
 import toast, { Toaster } from "react-hot-toast";
+import { toggleGptSearchView } from "../redux/gptSlice";
+import {
+  Supported_Language,
+  Text_Based_On_Language,
+} from "../utils/languageConstant";
+import { changeLanguage } from "../redux/configSlice";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -19,6 +25,8 @@ const Header = () => {
   const userObject = useSelector((state) => state.user);
   const userName = userObject?.displayName;
   const firstName = userName?.split(" ")[0];
+  const gptSearchView = useSelector((store) => store.gpt.showGptSearch);
+  const language = useSelector((store) => store.config.lang);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -50,6 +58,20 @@ const Header = () => {
       });
   };
 
+  const handleGptSearchClick = () => {
+    dispatch(toggleGptSearchView(true));
+  };
+
+  const handleHomeClick = () => {
+    dispatch(toggleGptSearchView(false));
+    dispatch(changeLanguage("en"));
+  };
+
+  const handleChangeLanguage = (e) => {
+    console.log(e.target.value);
+    dispatch(changeLanguage(e.target.value));
+  };
+
   return (
     <div>
       <Toaster toastOptions={{ duration: 2000, position: "top-right" }} />
@@ -70,19 +92,51 @@ const Header = () => {
               alt="netflix-logo"
             />
             <ul className="flex text-white px-10 focus:font-semibold cursor-pointer">
-              <Link to="/browse">
-                <li className="px-2 font-bold">Home</li>
+              <Link to="/browse" onClick={handleHomeClick}>
+                <li className="px-2 font-bold">
+                  {Text_Based_On_Language[language].home}
+                </li>
               </Link>
-              <li className="px-2">TV Shows</li>
-              <li className="px-2">Movies</li>
-              <li className="px-2">New & Popular</li>
-              <li className="px-2">My List</li>
-              <li className="px-2">Browse by Languages</li>
+              <li className="px-2">
+                {Text_Based_On_Language[language].tvShow}
+              </li>
+              <li className="px-2">{Text_Based_On_Language[language].movie}</li>
+              <li className="px-2">
+                {Text_Based_On_Language[language].newPopular}
+              </li>
+              <li className="px-2">
+                {Text_Based_On_Language[language].myList}
+              </li>
             </ul>
           </div>
-          <div>
+          <div className="">
             <div className="flex items-center">
-              <GoSearch color="white" className="w-6 h-6 mx-1 cursor-pointer" />
+              {gptSearchView && (
+                <select
+                  className="m-2 p-1 bg-red-800 text-white focus:outline-none rounded-md"
+                  onChange={handleChangeLanguage}
+                >
+                  {Supported_Language.map((lang) => (
+                    <option
+                      key={lang.identifier}
+                      className="px-2"
+                      value={lang.identifier}
+                    >
+                      {lang.name}
+                    </option>
+                  ))}
+                </select>
+              )}
+              <button
+                className="flex text-white bg-red-800 px-2 py-1 rounded-md"
+                onClick={handleGptSearchClick}
+              >
+                GPT
+                <GoSearch
+                  color="white"
+                  className="w-6 h-6 mx-1 cursor-pointer"
+                />
+              </button>
               <IoMdNotificationsOutline
                 color="white"
                 className="w-6 h-6 mx-4 cursor-pointer"
@@ -101,7 +155,7 @@ const Header = () => {
               />
             </div>
             {showDropdown && (
-              <div className="absolute w-36 my-1 px-2 bg-black text-white rounded-md">
+              <div className="absolute w-auto my-1 px-2 bg-black text-white rounded-md right-2 top-[50px]">
                 <div className="flex items-center my-1">
                   <img
                     className="w-4 h-4 rounded-sm mx-1"
@@ -112,12 +166,16 @@ const Header = () => {
                 </div>
                 <div className="flex items-center my-1">
                   <CiUser className="w-4 h-4 mx-1" />
-                  <p className="px-1">Account</p>
+                  <p className="px-1">
+                    {Text_Based_On_Language[language].account}
+                  </p>
                 </div>
                 <a href="https://help.netflix.com/en/" target="blank">
                   <div className="flex items-center mt-1 mb-2 cursor-pointer">
                     <IoHelpCircleOutline className="w-4 h-4 mx-1" />
-                    <p className="px-1">Help Center</p>
+                    <p className="px-1">
+                      {Text_Based_On_Language[language].helpCenter}
+                    </p>
                   </div>
                 </a>
                 <hr />
@@ -125,7 +183,7 @@ const Header = () => {
                   className="text-sm text-center my-2 cursor-pointer"
                   onClick={handleSignOut}
                 >
-                  Sign Out of Netflix
+                  {Text_Based_On_Language[language].signOut}
                 </div>
               </div>
             )}

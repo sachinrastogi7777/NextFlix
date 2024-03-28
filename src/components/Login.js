@@ -77,7 +77,7 @@ const Login = () => {
     <div>
       <Header />
       <div className="absolute">
-        <img src="/Assets/background-img.jpg" alt="background-img" />
+        <img src="/Assets/background-img-2.jpg" alt="background-img" />
       </div>
       <form
         className="w-[36%] absolute bg-black px-16 py-6 my-24 mx-auto left-0 right-0 text-white rounded-md bg-opacity-80"
