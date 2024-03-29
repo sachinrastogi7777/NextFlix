@@ -1,30 +1,31 @@
 import React from "react";
 import { IoIosPlay } from "react-icons/io";
 import { BiInfoCircle } from "react-icons/bi";
-import { MOVIE_POSTER_PATH } from "../utils/constant";
 
 const VideoTitle = ({ movieInfo }) => {
-  const { original_title, overview, poster_path, vote_average } = movieInfo;
-  const final_overview =
-    overview.length > 200 ? overview.slice(0, 200) + "..." : overview;
+  const { original_title, overview } = movieInfo;
   return (
-    <div className="pt-40 px-10 absolute text-white bg-gradient-to-r from-black w-screen aspect-video">
-      <img
-        alt="movie-poster"
-        src={MOVIE_POSTER_PATH + poster_path}
-        className="w-24 my-2"
-      />
-      <h1 className="text-3xl font-bold mb-1">{original_title}</h1>
-      <p className="w-2/5">{final_overview}</p>
-      <div className="flex my-4">
-        <button className="flex items-center bg-white text-black font-semibold px-4 py-1 text-sm rounded-sm hover:opacity-80">
-          <IoIosPlay size={"20px"} />
-          Play
-        </button>
-        <button className="flex items-center bg-gray-400 text-white px-2 ml-2 py-1 text-sm rounded-sm hover:opacity-80">
-          <BiInfoCircle color="white" size={"18px"} />
-          More Info
-        </button>
+    <div className="w-screen aspect-video lg:pt-[13%] sm:pt-[25%]  md:pt-[20%] pt-[20%] lg:px-28 md:px-20 sm:px-10 px-8 overflow-hidden bg-gradient-to-r from-black ">
+      <div className="flex justify-start items-start flex-col">
+        <span className="lg:w-5/12 md:w-7/12 sm:w-6/12 w-6/12 lg:text-4xl md:text-4xl  text-base sm:text-3xl block xl:text-5xl text-white font-bold">
+          {original_title}
+        </span>
+        <span className="lg:w-4/12 md:w-5/12  sm:w-5/12 w-7/12 text-white lg:text-sm md:text-sm text-[7px] hidden sm:block tracking-wide font-normal lg:pt-3 pt-0.5 md:pt-2 sm:pt-2">
+          {overview.length > 120 ? `${overview.slice(0, 120)}...` : overview}
+        </span>
+        <span className="lg:w-4/12 md:w-5/12  sm:w-5/12 w-5/12 text-white lg:text-sm md:text-xs text-[7px] sm:hidden tracking-wide font-normal lg:pt-3 pt-0.5 md:pt-2">
+          {overview.length > 60 ? `${overview.slice(0, 60)}...` : overview}
+        </span>
+        <div className="flex justify-evenly items-start flex-row gap-2 lg:pt-6 sm:pt-3 pt-1.5 md:pt-5">
+          <button className="md:px-4 cursor-pointer md:py-1.5 px-2 py-0.5 lg:px-4 lg:py-1.5 rounded-md lg:text-lg md:text-base sm:text-xs text-[9px] text-black bg-white hover:opacity-80 font-semibold flex items-center">
+            <IoIosPlay className="pr-1 lg:text-lg md:text-base sm:text-xs text-[9px]" />
+            Play Now
+          </button>
+          <button className="md:px-4 md:py-1.5  cursor-pointer px-2 py-0.5 lg:px-4 lg:py-1.5 rounded-md lg:text-lg md:text-base sm:text-xs text-[9px] text-white bg-zinc-600 hover:opacity-80 font-semibold flex items-center">
+            <BiInfoCircle className="ri-information-line pr-1 lg:text-xl  md:text-base sm:text-xs text-[9px]" />
+            More Info
+          </button>
+        </div>
       </div>
     </div>
   );

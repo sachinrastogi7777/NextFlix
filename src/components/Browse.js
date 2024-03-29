@@ -16,7 +16,7 @@ const Browse = () => {
   useTopRatedMovies();
   useUpcomingMovies();
   return (
-    <div>
+    <div className="text-white w-screen">
       <Header />
       {gptSearchView ? (
         <GptSearch />

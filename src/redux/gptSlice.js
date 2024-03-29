@@ -9,7 +9,7 @@ const gptSlice = createSlice({
   },
   reducers: {
     toggleGptSearchView: (state, action) => {
-      state.showGptSearch = action.payload;
+      state.showGptSearch = !state.showGptSearch;
     },
     addGptMoviesResult: (state, action) => {
       const { movieNames, movieResults } = action.payload;

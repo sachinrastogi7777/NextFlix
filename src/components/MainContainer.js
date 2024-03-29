@@ -8,9 +8,13 @@ const MainContainer = () => {
   if (!movies) return;
   const mainMovie = movies[Math.floor(Math.random() * 20)];
   return (
-    <div>
-      <VideoTitle movieInfo={mainMovie} />
-      <VideoBackground movieId={mainMovie?.id} />
+    <div className="relative">
+      <div className="overflow-hidden">
+        <VideoBackground movieId={mainMovie?.id} />
+      </div>
+      <div className="absolute top-0">
+        <VideoTitle movieInfo={mainMovie} />
+      </div>
     </div>
   );
 };

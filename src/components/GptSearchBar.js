@@ -45,29 +45,26 @@ const GptSearchBar = () => {
     dispatch(
       addGptMoviesResult({ movieNames: movieList, movieResults: tmdbResults })
     );
-    console.log(tmdbResults);
   };
 
   return (
-    <div className="pt-[10%] flex justify-center">
-      <form
-        className="w-1/2 grid grid-cols-12"
-        onSubmit={(e) => e.preventDefault()}
+    <form
+      className="w-11/12 xl:w-1/2 sm:w-1/2 md:w-1/2 lg:w-1/2 mx-auto"
+      onSubmit={(e) => e.preventDefault()}
+    >
+      <input
+        ref={searchText}
+        type="text"
+        placeholder={Text_Based_On_Language[language].gptSearchPlaceholder}
+        className="xl:text-base lg:text-base md:text-sm sm:text-sm text-xs rounded-l-full font-normal text-black border-black xl:pl-5 md:pl-4 sm:pl-4 pl-3 lg:pl-5 xl:py-3 lg:py-3 md:py-2.5 sm:py-2 py-1.5 xl:w-9/12 md:w-10/12 w-9/12 sm:w-10/12 lg:w-9/12"
+      />
+      <button
+        className="bg-red-700 lg:py-3 md:py-2.5 sm:py-2 py-1.5 sm:px-4 px-2 md:px-6 lg:px-8 font-semibold xl:text-base lg:text-base sm:text-sm text-xs md:w-2.5/12 sm:w-2/12 w-1.5/12 lg:w-3/12 rounded-r-full"
+        onClick={() => handleGptSearch()}
       >
-        <input
-          ref={searchText}
-          type="text"
-          placeholder={Text_Based_On_Language[language].gptSearchPlaceholder}
-          className="px-4 py-2 my-2 col-span-10 rounded-l-full focus:outline-none"
-        />
-        <button
-          className="bg-red-800 text-white my-2 py-2 rounded-r-full col-span-2"
-          onClick={() => handleGptSearch()}
-        >
-          {Text_Based_On_Language[language].search}
-        </button>
-      </form>
-    </div>
+        {Text_Based_On_Language[language].search}
+      </button>
+    </form>
   );
 };
 

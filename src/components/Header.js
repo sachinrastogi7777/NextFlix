@@ -1,10 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { AiFillCaretDown } from "react-icons/ai";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { GoSearch } from "react-icons/go";
-import { IoMdNotificationsOutline } from "react-icons/io";
-import { CiUser } from "react-icons/ci";
-import { IoHelpCircleOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../utils/firebase";
@@ -16,15 +12,14 @@ import {
   Text_Based_On_Language,
 } from "../utils/languageConstant";
 import { changeLanguage } from "../redux/configSlice";
+import { IoHome } from "react-icons/io5";
+import { FaSignOutAlt } from "react-icons/fa";
 
 const Header = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const dispatch = useDispatch();
-  const [showDropdown, setShowDropdown] = useState(false);
   const userObject = useSelector((state) => state.user);
   const userName = userObject?.displayName;
-  const firstName = userName?.split(" ")[0];
   const gptSearchView = useSelector((store) => store.gpt.showGptSearch);
   const language = useSelector((store) => store.config.lang);
 
@@ -59,12 +54,7 @@ const Header = () => {
   };
 
   const handleGptSearchClick = () => {
-    dispatch(toggleGptSearchView(true));
-  };
-
-  const handleHomeClick = () => {
-    dispatch(toggleGptSearchView(false));
-    dispatch(changeLanguage("en"));
+    dispatch(toggleGptSearchView());
   };
 
   const handleChangeLanguage = (e) => {
@@ -72,123 +62,92 @@ const Header = () => {
   };
 
   return (
-    <div>
+    <div className="absolute w-full bg-gradient-to-b from-black z-50 flex justify-between overflow-hidden lg:px-10 md:px-10 sm:px-8 px-4">
       <Toaster toastOptions={{ duration: 2000, position: "top-right" }} />
-      {location.pathname === "/" ? (
-        <div className="absolute px-36 py-2 w-full bg-gradient-to-b from-black z-10 flex justify-between">
-          <img
-            className="w-48"
-            src="/Assets/netflix_logo.png"
-            alt="netflix-logo"
-          />
-        </div>
-      ) : (
-        <div className="absolute px-10 py-2 w-full bg-gradient-to-b from-black z-10 flex justify-between items-center">
-          <div className="flex items-center">
-            <img
-              className="w-36"
-              src="/Assets/netflix_logo.png"
-              alt="netflix-logo"
-            />
-            <ul className="flex text-white px-10 focus:font-semibold cursor-pointer">
-              <Link to="/browse" onClick={handleHomeClick}>
-                <li className="px-2 font-bold">
+      <Link to={"/browse"}>
+        <img
+          className="lg:w-48 sm:w-28 w-20 md:w-40 md:py-4 py-2"
+          src="/Assets/netflix_logo.png"
+          alt="netflix-logo"
+        />
+      </Link>
+      <div className="flex flex-row justify-center items-center">
+        {userObject && (
+          <div className="flex justify-center items-center flex-row lg:gap-2 gap-0.5 sm:gap-1">
+            <span className="text-white pr-2 font-normal text-xs md:font-semibold md:text-lg">
+              {Text_Based_On_Language[language].welcome} {userName}
+            </span>
+            {gptSearchView ? (
+              <>
+                <button
+                  className="bg-red-700 lg:text-base hidden md:flex md:items-center text-white font-normal hover:opacity-80 py-1 px-2 rounded-md mr-1.5"
+                  onClick={handleGptSearchClick}
+                >
+                  <IoHome className="w-4 sm:w-6 lg:pr-1 pr-0.5" />
                   {Text_Based_On_Language[language].home}
-                </li>
-              </Link>
-              <li className="px-2">
-                {Text_Based_On_Language[language].tvShow}
-              </li>
-              <li className="px-2">{Text_Based_On_Language[language].movie}</li>
-              <li className="px-2">
-                {Text_Based_On_Language[language].newPopular}
-              </li>
-              <li className="px-2">
-                {Text_Based_On_Language[language].myList}
-              </li>
-            </ul>
-          </div>
-          <div className="">
-            <div className="flex items-center">
-              {gptSearchView && (
-                <select
-                  className="m-2 p-1 bg-red-800 text-white focus:outline-none rounded-md"
-                  onChange={handleChangeLanguage}
+                </button>
+                <button
+                  className="bg-red-700 text-sm flex items-center md:hidden text-white font-normal hover:opacity-80 py-1 px-0.5 rounded-md mr-0.5"
+                  onClick={handleGptSearchClick}
                 >
-                  {Supported_Language.map((lang) => (
-                    <option
-                      key={lang.identifier}
-                      className="px-2"
-                      value={lang.identifier}
-                    >
-                      {lang.name}
-                    </option>
-                  ))}
-                </select>
-              )}
-              <button
-                className="flex text-white bg-red-800 px-2 py-1 rounded-md"
-                onClick={handleGptSearchClick}
-              >
-                GPT
-                <GoSearch
-                  color="white"
-                  className="w-6 h-6 mx-1 cursor-pointer"
-                />
-              </button>
-              <IoMdNotificationsOutline
-                color="white"
-                className="w-6 h-6 mx-4 cursor-pointer"
-              />
-              <img
-                className="w-6 h-6 rounded-sm"
-                alt="user-icon"
-                src="/Assets/user-icon.png"
-              />
-              <AiFillCaretDown
-                className="mx-1 cursor-pointer"
-                color="white"
-                onClick={() => {
-                  setShowDropdown(!showDropdown);
-                }}
-              />
-            </div>
-            {showDropdown && (
-              <div className="absolute w-auto my-1 px-2 bg-black text-white rounded-md right-2 top-[50px]">
-                <div className="flex items-center my-1">
-                  <img
-                    className="w-4 h-4 rounded-sm mx-1"
-                    alt="user-icon"
-                    src="/Assets/user-icon-2.png"
+                  <IoHome className="w-4 sm:w-6 lg:pr-1 pr-0.5" />
+                  {Text_Based_On_Language[language].home}
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  className="bg-red-700 lg:text-base hidden md:flex md:items-center text-white font-normal hover:opacity-80 py-1 px-2 rounded-md mr-1.5"
+                  onClick={handleGptSearchClick}
+                >
+                  <GoSearch
+                    color="white"
+                    className="w-4 sm:w-6 lg:pr-1 pr-0.5"
                   />
-                  <p className="px-1">{firstName}</p>
-                </div>
-                <div className="flex items-center my-1">
-                  <CiUser className="w-4 h-4 mx-1" />
-                  <p className="px-1">
-                    {Text_Based_On_Language[language].account}
-                  </p>
-                </div>
-                <a href="https://help.netflix.com/en/" target="blank">
-                  <div className="flex items-center mt-1 mb-2 cursor-pointer">
-                    <IoHelpCircleOutline className="w-4 h-4 mx-1" />
-                    <p className="px-1">
-                      {Text_Based_On_Language[language].helpCenter}
-                    </p>
-                  </div>
-                </a>
-                <hr />
-                <div
-                  className="text-sm text-center my-2 cursor-pointer"
-                  onClick={handleSignOut}
+                  {Text_Based_On_Language[language].gptSearch}
+                </button>
+                <button
+                  className="bg-red-700 text-sm flex items-center md:hidden text-white font-normal hover:opacity-80 py-1 px-0.5 rounded-md mr-0.5"
+                  onClick={handleGptSearchClick}
                 >
-                  {Text_Based_On_Language[language].signOut}
-                </div>
-              </div>
+                  <GoSearch
+                    color="white"
+                    className="w-4 sm:w-6 lg:pr-1 pr-0.5"
+                  />
+                  GPT
+                </button>
+              </>
             )}
+            <button
+              className="text-white hidden md:flex items-center lg:text-base md:text-base font-normal hover:opacity-80 py-1 px-1 rounded-md mr-2.5 bg-zinc-700"
+              onClick={handleSignOut}
+            >
+              <FaSignOutAlt className="pr-0.5 md:pr-1" />
+              {Text_Based_On_Language[language].signOut}
+            </button>
+            <button
+              className="text-white md:hidden text-sm font-normal hover:opacity-80 py-2 px-1.5 rounded-md mr-1 bg-zinc-700"
+              onClick={handleSignOut}
+            >
+              <FaSignOutAlt className="pr-0.5 md:pr-1" />
+            </button>
           </div>
-        </div>
-      )}
+        )}
+        <select
+          className="bg-red-800 text-white border cursor-pointer border-black sm:px-1.5 sm:py-1 px-0.5 py-0.5 md:px-2 md:py-1 rounded-md"
+          onChange={handleChangeLanguage}
+        >
+          {Supported_Language.map((lang) => (
+            <option
+              key={lang.identifier}
+              className="text-white md:px-2 md:py-1 sm:px-1.5 sm:py-0.5"
+              value={lang.identifier}
+            >
+              {lang.name}
+            </option>
+          ))}
+        </select>
+      </div>
     </div>
   );
 };
