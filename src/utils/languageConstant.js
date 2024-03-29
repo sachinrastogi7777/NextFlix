@@ -33,6 +33,7 @@ export const Text_Based_On_Language = {
       "We will send you an password reset link on your email to reset your password.",
     emailMe: "Email Me",
     emailPlaceholder: "name@example.com",
+    back: "Back",
   },
   hindi: {
     search: "खोज",
@@ -53,6 +54,7 @@ export const Text_Based_On_Language = {
       "आपका पासवर्ड रीसेट करने के लिए हम आपको आपके ईमेल पर एक पासवर्ड रीसेट लिंक भेजेंगे।",
     emailMe: "मुझे ईमेल करो",
     emailPlaceholder: "name@example.com",
+    back: "पीछे",
   },
   spanish: {
     search: "Buscar",
@@ -73,5 +75,6 @@ export const Text_Based_On_Language = {
       "Le enviaremos un enlace de restablecimiento de contraseña a su correo electrónico para restablecer su contraseña.",
     emailMe: "Envíeme un correo electrónico",
     emailPlaceholder: "nombre@ejemplo.com",
+    back: "Atrás",
   },
 };

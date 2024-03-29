@@ -4,6 +4,7 @@ import Login from "./Login";
 import Browse from "./Browse";
 import LoginHelp from "./LoginHelp";
 import Error from "../Layout/Error";
+import MovieInfo from "./MovieInfo";
 
 const Body = () => {
   const appRouter = createBrowserRouter([
@@ -22,6 +23,10 @@ const Body = () => {
     {
       path: "/error",
       element: <Error />,
+    },
+    {
+      path: "/movieinfo/:id",
+      element: <MovieInfo />,
     },
   ]);
 

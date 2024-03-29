@@ -14,6 +14,8 @@ import {
 import { changeLanguage } from "../redux/configSlice";
 import { IoHome } from "react-icons/io5";
 import { FaSignOutAlt } from "react-icons/fa";
+import { IoArrowBackOutline } from "react-icons/io5";
+import { addCastInfo } from "../redux/movieSlice";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -29,7 +31,9 @@ const Header = () => {
         // User is signed in
         const { uid, email, displayName } = user;
         dispatch(addUser({ uid: uid, email: email, displayName: displayName }));
-        navigate("/browse");
+        if (window.location.pathname === "/") {
+          navigate("/browse");
+        }
       } else {
         // User is signed out
         dispatch(removeUser());
@@ -59,6 +63,10 @@ const Header = () => {
 
   const handleChangeLanguage = (e) => {
     dispatch(changeLanguage(e.target.value));
+  };
+
+  const handleBackClick = () => {
+    dispatch(addCastInfo());
   };
 
   return (
@@ -96,26 +104,67 @@ const Header = () => {
               </>
             ) : (
               <>
-                <button
-                  className="bg-red-700 lg:text-base hidden md:flex md:items-center text-white font-normal hover:opacity-80 py-1 px-2 rounded-md mr-1.5"
-                  onClick={handleGptSearchClick}
-                >
-                  <GoSearch
-                    color="white"
-                    className="w-4 sm:w-6 lg:pr-1 pr-0.5"
-                  />
-                  {Text_Based_On_Language[language].gptSearch}
-                </button>
-                <button
-                  className="bg-red-700 text-sm flex items-center md:hidden text-white font-normal hover:opacity-80 py-1 px-0.5 rounded-md mr-0.5"
-                  onClick={handleGptSearchClick}
-                >
-                  <GoSearch
-                    color="white"
-                    className="w-4 sm:w-6 lg:pr-1 pr-0.5"
-                  />
-                  GPT
-                </button>
+                {window.location.pathname.includes("movieinfo") ? (
+                  <Link to={"/browse"}>
+                    <button
+                      className="bg-red-700 text-sm lg:text-base flex items-center text-white font-normal hover:opacity-80 py-1 px-2 rounded-md mr-1.5"
+                      onClick={handleBackClick}
+                    >
+                      <IoArrowBackOutline
+                        color="white"
+                        className="w-4 sm:w-6 lg:pr-1 pr-0.5"
+                      />
+                      {Text_Based_On_Language[language].back}
+                    </button>
+                  </Link>
+                ) : (
+                  <>
+                    <button
+                      className="bg-red-700 lg:text-base hidden md:flex md:items-center text-white font-normal hover:opacity-80 py-1 px-2 rounded-md mr-1.5"
+                      onClick={handleGptSearchClick}
+                    >
+                      <GoSearch
+                        color="white"
+                        className="w-4 sm:w-6 lg:pr-1 pr-0.5"
+                      />
+                      {Text_Based_On_Language[language].gptSearch}
+                    </button>
+                    <button
+                      className="bg-red-700 text-sm flex items-center md:hidden text-white font-normal hover:opacity-80 py-1 px-0.5 rounded-md mr-0.5"
+                      onClick={handleGptSearchClick}
+                    >
+                      <GoSearch
+                        color="white"
+                        className="w-4 sm:w-6 lg:pr-1 pr-0.5"
+                      />
+                      GPT
+                    </button>
+                  </>
+                )}
+                {/* <Link to={"/browse"}>
+                  <button
+                    className="bg-red-700 lg:text-base hidden md:flex md:items-center text-white font-normal hover:opacity-80 py-1 px-2 rounded-md mr-1.5"
+                    onClick={handleGptSearchClick}
+                  >
+                    <GoSearch
+                      color="white"
+                      className="w-4 sm:w-6 lg:pr-1 pr-0.5"
+                    />
+                    {Text_Based_On_Language[language].gptSearch}
+                  </button>
+                </Link>
+                <Link to={"/browse"}>
+                  <button
+                    className="bg-red-700 text-sm flex items-center md:hidden text-white font-normal hover:opacity-80 py-1 px-0.5 rounded-md mr-0.5"
+                    onClick={handleGptSearchClick}
+                  >
+                    <GoSearch
+                      color="white"
+                      className="w-4 sm:w-6 lg:pr-1 pr-0.5"
+                    />
+                    GPT
+                  </button>
+                </Link> */}
               </>
             )}
             <button
@@ -134,13 +183,13 @@ const Header = () => {
           </div>
         )}
         <select
-          className="bg-red-800 text-white border cursor-pointer border-black sm:px-1.5 sm:py-1 px-0.5 py-0.5 md:px-2 md:py-1 rounded-md"
+          className="bg-red-800 text-white border cursor-pointer border-black sm:px-1.5 sm:py-1 px-0.5 py-0.5 md:px-2 md:py-1 rounded-md w-24 md:w-36"
           onChange={handleChangeLanguage}
         >
           {Supported_Language.map((lang) => (
             <option
               key={lang.identifier}
-              className="text-white md:px-2 md:py-1 sm:px-1.5 sm:py-0.5"
+              className="text-white md:px-2 md:py-1 sm:px-1.5 sm:py-0.5 text-sm md:text-base"
               value={lang.identifier}
             >
               {lang.name}
