@@ -37,7 +37,6 @@ const GptSearchBar = () => {
     }
     const movieList =
       gptSearchResult?.choices?.[0]?.message?.content.split(", ");
-    console.log(movieList);
 
     const promiseArray = movieList.map((movie) => searchMovieTMDB(movie));
 

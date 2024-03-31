@@ -25,7 +25,7 @@ const MovieInfo = () => {
         />
       </div>
       <MovieInfoUpper info={movieInfo} />
-      <MovieInfoMiddle id={movieInfo?.id} info={movieInfo} />
+      <MovieInfoMiddle id={id} info={movieInfo} />
     </div>
   );
 };

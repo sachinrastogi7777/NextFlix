@@ -30,7 +30,8 @@ const Header = () => {
       if (user) {
         // User is signed in
         const { uid, email, displayName } = user;
-        dispatch(addUser({ uid: uid, email: email, displayName: displayName }));
+        const userName = displayName.split(" ")[0];
+        dispatch(addUser({ uid: uid, email: email, displayName: userName }));
         if (window.location.pathname === "/") {
           navigate("/browse");
         }
@@ -66,7 +67,7 @@ const Header = () => {
   };
 
   const handleBackClick = () => {
-    dispatch(addCastInfo());
+    dispatch(addCastInfo(null));
   };
 
   return (

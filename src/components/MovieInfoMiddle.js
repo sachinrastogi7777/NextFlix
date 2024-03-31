@@ -35,7 +35,7 @@ const MovieInfoMiddle = ({ id, info }) => {
           <div className="overflow-x-scroll overflow-y-hidden no-scrollbar gap-2 sm:gap-3 md:gap-4 lg:gap-5 px-4 flex flex-row">
             {cast.map((cast) => (
               <div
-                key={cast?.profile_path}
+                key={cast?.id}
                 className="flex justify-between items-center rounded-lg flex-col bg-zinc-700"
               >
                 <div className="overflow-hidden h-[130px] sm:h-[150px] md:h-[170px] lg:h-[180px] xl:h-[190px] w-[90px] sm:w-[130px] md:w-[150px] lg:w-[160px] xl:w-[170px] rounded-t-lg">

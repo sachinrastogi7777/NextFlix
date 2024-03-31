@@ -1,9 +1,10 @@
 import React from "react";
 import { IoIosPlay } from "react-icons/io";
 import { BiInfoCircle } from "react-icons/bi";
+import { Link } from "react-router-dom";
 
 const VideoTitle = ({ movieInfo }) => {
-  const { original_title, overview } = movieInfo;
+  const { original_title, overview, id } = movieInfo;
   return (
     <div className="w-screen aspect-video lg:pt-[13%] sm:pt-[25%]  md:pt-[20%] pt-[20%] lg:px-28 md:px-20 sm:px-10 px-8 overflow-hidden bg-gradient-to-r from-black ">
       <div className="flex justify-start items-start flex-col">
@@ -21,10 +22,12 @@ const VideoTitle = ({ movieInfo }) => {
             <IoIosPlay className="pr-1 lg:text-lg md:text-base sm:text-xs text-[9px]" />
             Play Now
           </button>
-          <button className="md:px-4 md:py-1.5  cursor-pointer px-2 py-0.5 lg:px-4 lg:py-1.5 rounded-md lg:text-lg md:text-base sm:text-xs text-[9px] text-white bg-zinc-600 hover:opacity-80 font-semibold flex items-center">
-            <BiInfoCircle className="ri-information-line pr-1 lg:text-xl  md:text-base sm:text-xs text-[9px]" />
-            More Info
-          </button>
+          <Link to={"/movieinfo/" + id}>
+            <button className="md:px-4 md:py-1.5  cursor-pointer px-2 py-0.5 lg:px-4 lg:py-1.5 rounded-md lg:text-lg md:text-base sm:text-xs text-[9px] text-white bg-zinc-600 hover:opacity-80 font-semibold flex items-center">
+              <BiInfoCircle className="ri-information-line pr-1 lg:text-xl  md:text-base sm:text-xs text-[9px]" />
+              More Info
+            </button>
+          </Link>
         </div>
       </div>
     </div>
