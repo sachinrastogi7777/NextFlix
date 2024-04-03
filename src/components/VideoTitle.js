@@ -2,8 +2,11 @@ import React from "react";
 import { IoIosPlay } from "react-icons/io";
 import { BiInfoCircle } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import { Text_Based_On_Language } from "../utils/languageConstant";
+import { useSelector } from "react-redux";
 
 const VideoTitle = ({ movieInfo }) => {
+  const language = useSelector((store) => store.config.lang);
   const { original_title, overview, id } = movieInfo;
   return (
     <div className="w-screen aspect-video lg:pt-[13%] sm:pt-[25%]  md:pt-[20%] pt-[20%] lg:px-28 md:px-20 sm:px-10 px-8 overflow-hidden bg-gradient-to-r from-black ">
@@ -20,12 +23,12 @@ const VideoTitle = ({ movieInfo }) => {
         <div className="flex justify-evenly items-start flex-row gap-2 lg:pt-6 sm:pt-3 pt-1.5 md:pt-5">
           <button className="md:px-4 cursor-pointer md:py-1.5 px-2 py-0.5 lg:px-4 lg:py-1.5 rounded-md lg:text-lg md:text-base sm:text-xs text-[9px] text-black bg-white hover:opacity-80 font-semibold flex items-center">
             <IoIosPlay className="pr-1 lg:text-lg md:text-base sm:text-xs text-[9px]" />
-            Play Now
+            {Text_Based_On_Language[language].playNow}
           </button>
           <Link to={"/movieinfo/" + id}>
             <button className="md:px-4 md:py-1.5  cursor-pointer px-2 py-0.5 lg:px-4 lg:py-1.5 rounded-md lg:text-lg md:text-base sm:text-xs text-[9px] text-white bg-zinc-600 hover:opacity-80 font-semibold flex items-center">
               <BiInfoCircle className="ri-information-line pr-1 lg:text-xl  md:text-base sm:text-xs text-[9px]" />
-              More Info
+              {Text_Based_On_Language[language].moreInfo}
             </button>
           </Link>
         </div>
